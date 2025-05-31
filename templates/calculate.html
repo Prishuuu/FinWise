@@ -1,0 +1,116 @@
+<!-- templates/calculate.html -->
+{% extends 'base.html' %}
+{% block title %}Salary Calculator - FinWise{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-center">Salary Breakdown Calculator</h2>
+
+<form method="POST" class="mx-auto shadow p-4 rounded bg-light" style="max-width:600px;">
+    <div class="mb-3">
+        <label for="ctc" class="form-label fw-semibold">Enter Your Annual CTC (₹)</label>
+        <input type="number" step="0.01" min="0" class="form-control" id="ctc" name="ctc" required />
+    </div>
+
+    <label class="form-label fw-semibold">Select Input Mode</label>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="mode" id="auto" value="auto" checked />
+        <label class="form-check-label" for="auto">Average Case (Auto)</label>
+    </div>
+    <div class="form-check mb-3">
+        <input class="form-check-input" type="radio" name="mode" id="manual" value="manual" />
+        <label class="form-check-label" for="manual">Manual Input</label>
+    </div>
+
+    <!-- Manual inputs section, hidden by default -->
+    <div id="manual-inputs" class="border rounded p-3 mb-3 d-none bg-white shadow-sm">
+        <p class="text-muted fst-italic mb-3">Please enter <strong>annual amounts</strong> for all manual inputs.</p>
+        <div class="mb-3">
+            <label for="hra" class="form-label">Housing Rent Allowance (HRA) ₹</label>
+            <input type="number" step="0.01" min="0" id="hra" name="hra" class="form-control" placeholder="e.g. 200000" />
+        </div>
+        <div class="mb-3">
+            <label for="special" class="form-label">Special Allowance ₹</label>
+            <input type="number" step="0.01" min="0" id="special" name="special" class="form-control" placeholder="e.g. 50000" />
+        </div>
+        <div class="mb-3">
+            <label for="travel" class="form-label">Travel Allowance ₹</label>
+            <input type="number" step="0.01" min="0" id="travel" name="travel" class="form-control" placeholder="e.g. 19200" />
+        </div>
+        <div class="mb-3">
+            <label for="pf" class="form-label">Provident Fund (EPF) ₹</label>
+            <input type="number" step="0.01" min="0" id="pf" name="pf" class="form-control" placeholder="e.g. 36000" />
+        </div>
+        <div class="mb-3">
+            <label for="gratuity" class="form-label">Gratuity ₹</label>
+            <input type="number" step="0.01" min="0" id="gratuity" name="gratuity" class="form-control" placeholder="e.g. 15000" />
+        </div>
+
+        <hr />
+        <h5>Extra Components (optional)</h5>
+        <div id="extra-components-list"></div>
+        <button type="button" id="add-extra-component" class="btn btn-outline-primary btn-sm mb-3">Add Extra Component</button>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 shadow">Calculate</button>
+</form>
+
+{% if result %}
+<div class="result-box bg-white rounded shadow mt-5 p-4 mx-auto" style="max-width:600px;">
+    <h4 class="text-center mb-3">Breakdown Results</h4>
+    <ul class="list-group">
+        {% for key, value in result.items() %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ key }}
+                <span class="badge bg-primary rounded-pill">₹ {{ value }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const manualRadio = document.getElementById('manual');
+    const autoRadio = document.getElementById('auto');
+    const manualInputs = document.getElementById('manual-inputs');
+
+    function toggleManualInputs() {
+        if(manualRadio.checked){
+            manualInputs.classList.remove('d-none');
+        } else {
+            manualInputs.classList.add('d-none');
+            // Optionally clear manual inputs when switching back to auto
+            manualInputs.querySelectorAll('input').forEach(input => input.value = '');
+            document.getElementById('extra-components-list').innerHTML = '';
+        }
+    }
+
+    manualRadio.addEventListener('change', toggleManualInputs);
+    autoRadio.addEventListener('change', toggleManualInputs);
+
+    // Initial toggle on page load
+    toggleManualInputs();
+
+    // Extra Components logic
+    const addBtn = document.getElementById('add-extra-component');
+    const extraList = document.getElementById('extra-components-list');
+
+    addBtn.addEventListener('click', () => {
+        const idx = extraList.children.length;
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('mb-3', 'd-flex', 'gap-2');
+
+        wrapper.innerHTML = `
+            <input type="text" name="extra_name_${idx}" class="form-control" placeholder="Component Name" required />
+            <input type="number" min="0" step="0.01" name="extra_value_${idx}" class="form-control" placeholder="Amount (₹)" required />
+            <button type="button" class="btn btn-danger btn-sm remove-extra">X</button>
+        `;
+        extraList.appendChild(wrapper);
+
+        wrapper.querySelector('.remove-extra').addEventListener('click', () => {
+            extraList.removeChild(wrapper);
+        });
+    });
+});
+</script>
+{% endblock %}

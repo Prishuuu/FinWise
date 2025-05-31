@@ -1,0 +1,100 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}FinWise: Financial Wisdom{% endblock %}</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+</head>
+<body style="font-family: 'Poppins', sans-serif;">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <div class="container-fluid">
+        <a class="navbar-brand fs-4 fw-bold" href="/">💸 FinWise: Financial Wisdom</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav fs-5">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active text-warning{% endif %}" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/expense-tracker' %}active text-warning{% endif %}" href="/expense-tracker">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/about' %}active text-warning{% endif %}" href="/about">About</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main content -->
+<div class="main-bg min-vh-100 py-5">
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+<!-- Motivational Quote Bar -->
+<div class="quote-bar text-center py-3 bg-gradient bg-primary text-white fs-5 fst-italic shadow-sm">
+    <span id="quote-text" class="fade-in">Invest in yourself. Your career is the engine of your wealth.</span>
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Rotating Motivational Quotes Script -->
+<script>
+    const quotes = [
+        "Invest in yourself. Your career is the engine of your wealth.",
+        "Don’t just earn—grow financially wise!",
+        "Save today for a richer tomorrow.",
+        "A smart salary breakdown builds smarter wealth.",
+        "In-hand salary is freedom. Know it well.",
+        "Plan your finances, empower your dreams.",
+        "Your money should work as hard as you do."
+    ];
+
+    let current = 0;
+    function updateQuote() {
+        const quote = document.getElementById("quote-text");
+        quote.classList.remove("fade-in");
+        void quote.offsetWidth; // Trigger reflow
+        quote.innerText = quotes[current];
+        quote.classList.add("fade-in");
+        current = (current + 1) % quotes.length;
+    }
+
+    setInterval(updateQuote, 5000);
+</script>
+
+<!-- Quote Fade Animation CSS -->
+<style>
+    .fade-in {
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Savings Estimator - FinWise{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-center">Savings Estimator</h2>
+
+<form method="POST" class="mx-auto bg-light shadow p-4 rounded" style="max-width: 450px;">
+    <div class="mb-3">
+        <label for="in_hand" class="form-label fw-semibold">Monthly In-Hand Salary (₹)</label>
+        <input type="number" step="0.01" min="0" class="form-control" id="in_hand" name="in_hand" required />
+    </div>
+    <div class="mb-3">
+        <label for="expenses" class="form-label fw-semibold">Monthly Expenses (₹)</label>
+        <input type="number" step="0.01" min="0" class="form-control" id="expenses" name="expenses" required />
+    </div>
+
+    <button type="submit" class="btn btn-warning w-100 shadow">Estimate Savings</button>
+</form>
+
+{% if result %}
+<div class="result-box bg-white rounded shadow mt-5 p-4 mx-auto text-center" style="max-width: 450px;">
+    <h4>Savings Summary</h4>
+    <p class="fs-5">Monthly Savings: ₹{{ result['Monthly Savings'] }}</p>
+    <p class="fs-5">Annual Savings: ₹{{ result['Annual Savings'] }}</p>
+    <p class="fs-6 fw-semibold mt-3 {{ result['Color'] }} glow-text">
+        {{ result['Message'] }}
+    </p>
+</div>
+{% endif %}
+{% endblock %}

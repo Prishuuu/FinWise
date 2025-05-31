@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}About - FinWise{% endblock %}
+
+{% block content %}
+<div class="bg-gradient rounded shadow p-5 mx-auto about-container" style="max-width: 700px;">
+    <h2 class="mb-4 text-center text-gradient">About the Developer</h2>
+    <div class="text-center mb-4">
+        <img src="{{ url_for('static', filename='images/priyanshu.jpg') }}" alt="Priyanshu" class="rounded-circle shadow about-img" />
+    </div>
+
+    <p class="fs-5 about-text">
+        <strong>Priyanshu</strong><br />
+        A final year student at Chandigarh University, pursuing Bachelors of Engineering in Computer Science.<br />
+        Passionate about technology, coding, and financial literacy.
+    </p>
+
+    <p class="fs-6 about-contact">
+        <strong>Email:</strong> <a href="mailto:cse.priyanshu.01@gmail.com" class="link-custom">cse.priyanshu.01@gmail.com</a><br />
+        <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/priyanshu-id" target="_blank" class="link-custom">www.linkedin.com/in/priyanshu-id</a><br />
+        <strong>GitHub:</strong> <a href="https://github.com/Prishuuu" target="_blank" class="link-custom">github.com/Prishuuu</a>
+    </p>
+
+    <blockquote class="blockquote fst-italic text-center mt-4 quote-custom">
+        "Financial wisdom is the key to freedom. Invest in yourself and your future."
+    </blockquote>
+</div>
+{% endblock %}
